@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -exv
+
+# init helpers
+helpers_dir=${MONOPACKER_HELPERS_DIR:-"/etc/monopacker/scripts"}
+for h in ${helpers_dir}/*.sh; do
+    . $h;
+done
+
+echo "session optional        pam_gnome_keyring.so      use_authtok" >> /etc/pam.d/gdm-password
+echo "password        optional        pam_gnome_keyring.so" >> /etc/pam.d/passwd
