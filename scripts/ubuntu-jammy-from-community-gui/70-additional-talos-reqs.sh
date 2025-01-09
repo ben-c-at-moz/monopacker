@@ -33,14 +33,6 @@ pkg_name="linux-gcp-${short_version}-headers-${version_minus_dash_gcp}"
 sudo apt-get update
 sudo apt-get -y reinstall linux-headers-gcp linux-headers-`uname -r` ${pkg_name}
 
-# TODO: remove this once the bugs below are fixed
-#
-# issue: Kernel 6.8.0 removes strlcpy, but the canonical-shipped v4l2loopback module uses it still.
-#   see: https://bugs.launchpad.net/ubuntu/+source/v4l2loopback/+bug/2076951
-#        https://bugs.launchpad.net/ubuntu/+source/v4l2loopback/+bug/2078961
-#
-# remove 6.8.0 kernel packages for now
-sudo apt-get remove -y linux-image-6.8.0-1015-gcp linux-gcp-6.8-tools-6.8.0-1015 linux-gcp-6.8-headers-6.8.0-1015
 
 #
 # apt packages
@@ -55,7 +47,22 @@ apt-get install -y dkms kmod llvm sox libxcb1 nodejs xvfb apt-utils
 #
 # install v4l2loopback
 #
-apt-get install -y v4l2loopback-dkms v4l2loopback-utils
+# normal installation command
+# apt-get install -y v4l2loopback-dkms v4l2loopback-utils
+#
+# fixed installation command
+#   issue: Kernel 6.8.0 removes strlcpy, but the canonical-shipped v4l2loopback module uses it still.
+#     see: https://bugs.launchpad.net/ubuntu/+source/v4l2loopback/+bug/2076951
+#          https://bugs.launchpad.net/ubuntu/+source/v4l2loopback/+bug/2078961
+#
+# use fix from 2076951 (link above)
+cd /tmp
+wget http://ftp.us.debian.org/debian/pool/main/v/v4l2loopback/v4l2loopback-dkms_0.13.2-1_all.deb
+sudo dpkg -i v4l2loopback-dkms_0.13.2-1_all.deb
+rm /tmp/v4l2loopback-dkms*.deb
+cd -
+apt-get install -y v4l2loopback-utils
+
 # verify
 dkms status
 
@@ -65,7 +72,7 @@ dkms status
 #
 
 # required on 22.04?
-# 
+#
 # if [[ "$BUILD_V4L2LOOPBACK" ]]; then
 #     # This is for Ubuntu 18.04 in GCP. We have to build the module, otherwise it will not work.
 #     V4L2LOOPBACK_VERSION=${V4L2LOOPBACK_VERSION:-0.12.5}
