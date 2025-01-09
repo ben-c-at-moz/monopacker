@@ -1,3 +1,6 @@
 ---
 ssh_username: ubuntu
-source_image_family: ubuntu-2204-lts
+# pin to make more deterministic
+# source_image_family: ubuntu-2204-lts
+#   - image found via `gcloud compute images list --show-deprecated | grep ubuntu-2204-lts`
+source_image: ubuntu-2204-jammy-v20240927
