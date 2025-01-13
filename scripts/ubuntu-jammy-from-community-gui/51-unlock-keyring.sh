@@ -17,7 +17,7 @@ curl -o gnome-keyring.tar.xz https://download.gnome.org/sources/gnome-keyring/46
 tar xvf gnome-keyring.tar.xz
 cd gnome-keyring-46.2
 export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH
-./configure --prefix=/usr --sysconfdir=/etc --enable-pam --with-pam-dir=/lib/x86_64-linux-gnu/security
+./configure --prefix=/usr --sysconfdir=/etc --enable-pam --with-pam-dir=/lib/x86_64-linux-gnu/security --disable-doc
 make -j2
 make install
 cd ~
